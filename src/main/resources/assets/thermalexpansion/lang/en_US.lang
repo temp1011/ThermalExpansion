@@ -255,6 +255,7 @@ info.thermalexpansion.device.nullifier=Removes things from existence.
 info.thermalexpansion.device.tapper=Extracts fluid from a tree.
 info.thermalexpansion.device.water_gen=Pulls water from surroundings.
 info.thermalexpansion.device.xp_collector=Collects experience in an area.
+info.thermalexpansion.device.catcher=Catches mobs in the surrounding area.
 
 info.thermalexpansion.dynamo.0=Generates Energy (Redstone Flux).
 info.thermalexpansion.dynamo.compression=Requires fluid fuel and coolant.
@@ -457,6 +458,8 @@ tab.thermalexpansion.device.water_gen.2=Don't drown.
 tab.thermalexpansion.device.xp_collector.0=Collects experience from the nearby area.
 tab.thermalexpansion.device.xp_collector.1=Experience is converted to a versatile fluid form.
 tab.thermalexpansion.device.xp_collector.2=Certain catalysts will boost production.
+tab.thermalexpansion.device.catcher.0=Captures mobs in the nearby area.
+tab.thermalexpansion.device.catcher.1=Supply empty morbs for operation.
 
 tab.thermalexpansion.dynamo.0=Generation rate varies according to energy demand.
 tab.thermalexpansion.dynamo.compression.0=Generates Redstone Flux using fluid fuels and coolants.
@@ -563,6 +566,7 @@ tile.thermalexpansion.device.nullifier.name=Nullifier
 tile.thermalexpansion.device.tapper.name=Arboreal Extractor
 tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
 tile.thermalexpansion.device.xp_collector.name=Insightful Condenser
+tile.thermalexpansion.device.catcher.name=Mob Encapsulator
 
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo
 tile.thermalexpansion.dynamo.enervation.name=Enervation Dynamo
