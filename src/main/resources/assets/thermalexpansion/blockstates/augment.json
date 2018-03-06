@@ -221,12 +221,12 @@
 			},
 			"apparatusdepth": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/depth"
 				}
 			},
 			"apparatusradius": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/radius"
 				}
 			}
 		}

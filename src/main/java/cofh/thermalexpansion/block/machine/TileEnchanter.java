@@ -12,6 +12,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerEnchanter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -97,6 +98,15 @@ public class TileEnchanter extends TileMachineBase {
 
 		return TYPE;
 	}
+	
+	@Override
+	protected int calcEnergy() {
+
+		if (augmentEmpowered) {
+			return Math.min(energyConfig.minPower, energyStorage.getEnergyStored());
+		}
+		return super.calcEnergy();
+	}
 
 	@Override
 	public int getMaxInputSlot() {
@@ -154,8 +164,7 @@ public class TileEnchanter extends TileMachineBase {
 
 	@Override
 	protected void processStart() {
-
-		processMax = EnchanterManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = (augmentEmpowered ? EnchanterManager.getRecipe(inventory[0], inventory[1]).getEnergy() : FurnaceManager.getRecipe(inventory[0]).getEnergy()) * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 

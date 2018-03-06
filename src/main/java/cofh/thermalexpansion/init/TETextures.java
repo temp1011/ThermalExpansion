@@ -107,6 +107,7 @@ public class TETextures {
 		DEVICE_FACE_DIFFUSER =    	    	register(DEVICE_FACE_ + "diffuser");
 		DEVICE_FACE_FACTORIZER =            register(DEVICE_FACE_ + "factorizer");
 		DEVICE_FACE_CATCHER=				register(DEVICE_FACE_ + "catcher");
+		DEVICE_FACE_CHUNK_LOADER=			register(DEVICE_FACE_ + "chunk_loader");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
@@ -120,6 +121,7 @@ public class TETextures {
 		DEVICE_ACTIVE_DIFFUSER =        	register(DEVICE_ACTIVE_ + "diffuser");
 		DEVICE_ACTIVE_FACTORIZER =          register(DEVICE_ACTIVE_ + "factorizer");
 		DEVICE_ACTIVE_CATCHER=				register(DEVICE_ACTIVE_ + "catcher");
+		DEVICE_ACTIVE_CHUNK_LOADER=			register(DEVICE_ACTIVE_ + "chunk_loader");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -345,7 +347,8 @@ public class TETextures {
 				DEVICE_FACE_XP_COLLECTOR,
 				DEVICE_FACE_DIFFUSER,
 				DEVICE_FACE_FACTORIZER,
-				DEVICE_FACE_CATCHER
+				DEVICE_FACE_CATCHER,
+				DEVICE_FACE_CHUNK_LOADER
 		};
 
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
@@ -360,7 +363,8 @@ public class TETextures {
 				DEVICE_ACTIVE_XP_COLLECTOR,
 				DEVICE_ACTIVE_DIFFUSER,
 				DEVICE_FACE_FACTORIZER,
-				DEVICE_ACTIVE_CATCHER
+				DEVICE_ACTIVE_CATCHER,
+				DEVICE_ACTIVE_CHUNK_LOADER
 		};
 
 		DYNAMO_COIL = new TextureAtlasSprite[] {
@@ -656,6 +660,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_DIFFUSER;
 	public static TextureAtlasSprite DEVICE_FACE_FACTORIZER;
 	public static TextureAtlasSprite DEVICE_FACE_CATCHER;
+	public static TextureAtlasSprite DEVICE_FACE_CHUNK_LOADER;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
 	public static TextureAtlasSprite DEVICE_ACTIVE_WATER_GEN;
@@ -670,6 +675,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_DIFFUSER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FACTORIZER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_CATCHER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_CHUNK_LOADER;
 
 	public static TextureAtlasSprite DEVICE_FRAME_TOP;
 	public static TextureAtlasSprite DEVICE_FRAME_SIDE;

@@ -136,8 +136,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 				return new TileXpCollector();
 			case DIFFUSER:
 				return new TileDiffuser();
-			//			case CHUNK_LOADER:                      // TODO
-			//				return null;
+			case CHUNK_LOADER:                      // TODO
+				return new TileChunkLoader();
 			case CATCHER:
 				return new TileCatcher();
 			default:
@@ -316,6 +316,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		TileXpCollector.initialize();
 		TileDiffuser.initialize();
 		TileCatcher.initialize();
+		TileChunkLoader.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -336,6 +337,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		deviceExpCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.XP_COLLECTOR.getMetadata()));
 		deviceDiffuser = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.DIFFUSER.getMetadata()));
 		deviceCatcher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CATCHER.getMetadata()));
+		deviceChunkLoader = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHUNK_LOADER.getMetadata()));
 
 		addRecipes();
 

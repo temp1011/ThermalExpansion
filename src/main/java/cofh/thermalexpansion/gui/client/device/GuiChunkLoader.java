@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.client.device;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.block.device.TileChunkLoader;
-import cofh.thermalexpansion.gui.container.device.ContainerDiffuser;
+import cofh.thermalexpansion.gui.container.device.ContainerChunkLoader;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
@@ -26,7 +26,7 @@ public class GuiChunkLoader extends GuiDeviceBase {
 
 	public GuiChunkLoader(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerDiffuser(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerChunkLoader(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.device.chunk_loader");
 

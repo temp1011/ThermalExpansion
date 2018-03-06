@@ -87,7 +87,6 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 	@Override
 	public void update() {
 
-
 		if (!timeCheckOffset()) {
 			return;
 		}
@@ -98,7 +97,7 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		boolean curActive = isActive;
 		if (isActive) {
 			catchMobs();
-
+			isActive = false;
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
@@ -150,21 +149,22 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		}
 	}
 	
-	protected void catchMobs() {
+	protected boolean catchMobs() {
 		
 		if(inventory[0].isEmpty())
-			return;
+			return false;
 		for(int i = 1; i<5; i++) {
 			if(inventory[i].getCount()<inventory[i].getMaxStackSize() && (inventory[i].isEmpty() || inventory[0].getMetadata()==inventory[i].getMetadata()))
-				doWork();
+				return doWork();
 		}
+		return false;
 	}
 	
-	protected void doWork() {
+	protected boolean doWork() {
 		AxisAlignedBB area = new AxisAlignedBB(pos.add(-CATCH_RADIUS, -2, -CATCH_RADIUS), pos.add(1 + CATCH_RADIUS, 1 + 2, 1 + CATCH_RADIUS));
 		List<EntityLiving> mobs = world.getEntitiesWithinAABB(EntityLiving.class, area, EntitySelectors.IS_ALIVE);
 		if(mobs.isEmpty())
-			return;
+			return false;
 		EntityLiving mob=null;
 		for(EntityLiving possibleMob : mobs) {
 			if(ItemMorb.validMobs.contains(EntityList.getKey(possibleMob).toString())) {
@@ -179,22 +179,22 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 			for(int i = 1; i<5; i++) {
 				if(ItemMorb.containSameMob(inventory[i],morb)) {
 					inventory[i].grow(1);
-					mobCaught(mob);
-					break;
+					return mobCaught(mob);
 				} else if(inventory[i].isEmpty()) {
 					inventory[i] = stack.copy();
-					mobCaught(mob);
-					break;
+					return mobCaught(mob);
 				}			
 			}
 		}
+		return false;
 	}
 	
-	protected void mobCaught(Entity mob) {
+	protected boolean mobCaught(Entity mob) {
 			inventory[0].grow(-1);
 			BlockPos entityPos = mob.getPosition();
 			mob.setDead();
 			((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, entityPos.getX() + 0.5, entityPos.getY() + 0.2, entityPos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
+			return true;
 	}
 	
 	protected boolean timeCheckOffset() {

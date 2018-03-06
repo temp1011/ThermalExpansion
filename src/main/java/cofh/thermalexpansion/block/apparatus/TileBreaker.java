@@ -7,7 +7,7 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.gui.client.apparatus.GuiBreaker;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.gui.container.apparatus.ContainerBreaker;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,7 +40,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:apparatus_breaker");
 
-		// config();
+		config();
 	}
 
 	public static void config() {
@@ -68,6 +68,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 		return TYPE;
 	}
 
+	@Override
 	protected void activate() {
 
 		breakBlocksInArea();
@@ -127,7 +128,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerBreaker(inventory, this);
 	}
 
 	/* CAPABILITIES */

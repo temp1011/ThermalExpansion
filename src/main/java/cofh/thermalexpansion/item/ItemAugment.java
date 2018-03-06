@@ -225,7 +225,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineBrewerReagent = addAugmentItem(448, TEProps.MACHINE_BREWER_REAGENT);
 
-		// machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
+		machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
 
 		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER, AugmentType.MODE);
 		machineExtruderSedimentary = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_SEDIMENTARY, AugmentType.MODE);
@@ -252,8 +252,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoNumismaticGem = addAugmentItem(720, TEProps.DYNAMO_NUMISMATIC_GEM, AugmentType.MODE);
 
 		/* AUTOMATA */
-		// apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
-		// apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
+		apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
+		apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 

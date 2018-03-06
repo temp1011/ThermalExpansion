@@ -43,7 +43,7 @@ public class TileCollector extends TileApparatusBase implements IInventoryConnec
 
 		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion:apparatus_collector");
 
-		// config();
+		config();
 	}
 
 	public static void config() {

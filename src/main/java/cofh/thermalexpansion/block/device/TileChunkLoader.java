@@ -7,12 +7,14 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiChunkLoader;
 import cofh.thermalexpansion.gui.container.device.ContainerChunkLoader;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -24,6 +26,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TileChunkLoader extends TileDeviceBase implements ITickable {
 
@@ -81,6 +86,17 @@ public class TileChunkLoader extends TileDeviceBase implements ITickable {
 
 		return TYPE;
 	}
+	
+	public Collection<ChunkPos> getChunks()
+	{
+		Set<ChunkPos> chunks = new HashSet<ChunkPos>();
+		for(int i = -1 ; i<2 ; i++) {
+			for(int j = -1 ; j<2 ; j++) {
+				chunks.add(new ChunkPos(this.pos.getX() << 4 + i, this.pos.getZ() << 4 + j));
+			}
+		}
+		return chunks;
+	}
 
 	@Override
 	public void update() {
@@ -89,8 +105,20 @@ public class TileChunkLoader extends TileDeviceBase implements ITickable {
 			return;
 		}
 		transferInput();
+		fillTank();
 
 		boolean curActive = isActive;
+
+		if (isActive) {
+			useEnder();
+
+			if (!redstoneControlOrDisable()) {
+				isActive = false;
+			}
+		} else if (redstoneControlOrDisable()) {
+			isActive = true;
+		}
+		updateIfChanged(curActive);
 
 	}
 
@@ -114,6 +142,22 @@ public class TileChunkLoader extends TileDeviceBase implements ITickable {
 	protected boolean timeCheckOffset() {
 
 		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+	}
+	
+	protected void fillTank() {
+		if(tank.getSpace()>100 && !inventory[0].isEmpty()) {
+			tank.fill(new FluidStack(TFFluids.fluidEnder, 100), true);
+			inventory[0].shrink(1);
+			
+		}
+	}
+	
+	protected void useEnder() {
+		if(tank.getFluidAmount()<50) {
+			isActive = false;
+			return;
+		}
+		tank.drain(new FluidStack(TFFluids.fluidEnder, 50), true);
 	}
 
 	/* GUI METHODS */

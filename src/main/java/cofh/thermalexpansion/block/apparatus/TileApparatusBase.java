@@ -9,6 +9,7 @@ import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.init.TEProps;
@@ -19,9 +20,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
@@ -32,7 +35,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
 	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
-	public static final HashSet[] VALID_AUGMENTS = new HashSet[Type.values().length];
+	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
 	private static boolean enableSecurity = true;
@@ -46,8 +49,9 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 
 	public static void config() {
 
+		String category = "Apparatus";
 		String comment = "Enable this to allow for Apparatus to be securable.";
-		// enableSecurity = ThermalExpansion.CONFIG.get("Apparatus", "Securable", true, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
 	}
 
 	int processMax;
@@ -121,6 +125,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	}
 
 	protected void activate() {
+		//check energy here
 
 	}
 
@@ -285,6 +290,22 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.APPARATUS_SIDE;
+	}
+	
+	/* RENDERING */
+	public boolean hasFluidUnderlay() {
+
+		return false;
+	}
+
+	public FluidStack getRenderFluid() {
+
+		return null;
+	}
+
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
+		return 0xFFFFFFFF;
 	}
 
 }

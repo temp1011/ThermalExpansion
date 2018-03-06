@@ -327,8 +327,8 @@ info.thermalexpansion.storage.cell=Stores a large amount of Redstone Flux.
 info.thermalexpansion.storage.strongbox=Stores items. Can be secured.
 info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
 
-item.thermalexpansion.augment.apparatusDepth.name=WIP
-item.thermalexpansion.augment.apparatusRadius.name=WIP
+item.thermalexpansion.augment.apparatusDepth.name=Increases Depth
+item.thermalexpansion.augment.apparatusRadius.name=Increases Radius
 
 item.thermalexpansion.augment.dynamoBoiler.name=Boiler Conversion
 item.thermalexpansion.augment.dynamoCoilDuct.name=Transmission Coil Ducting
