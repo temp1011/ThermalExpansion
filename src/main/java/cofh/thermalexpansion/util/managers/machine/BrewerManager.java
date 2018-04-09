@@ -2,7 +2,9 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CorePotions;
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackSafeNBT;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
@@ -25,15 +27,21 @@ import static java.util.Arrays.asList;
 public class BrewerManager {
 
 	private static Map<List<Integer>, BrewerRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackBrewer> validationSet = new THashSet<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
 	private static Set<String> validationFluids = new THashSet<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+		oreValidator.addPrefix(ComparableItemStack.GEM);
+	}
 
 	public static final int DEFAULT_ENERGY = 2400;
 	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 3;
 
 	public static BrewerRecipe getRecipe(ItemStack input, FluidStack fluid) {
 
-		return input.isEmpty() || fluid == null ? null : recipeMap.get(asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return input.isEmpty() || fluid == null ? null : recipeMap.get(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static boolean recipeExists(ItemStack input, FluidStack fluid) {
@@ -48,7 +56,7 @@ public class BrewerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackBrewer(input));
+		return !input.isEmpty() && validationSet.contains(convertInput(input));
 	}
 
 	public static boolean isFluidValid(FluidStack fluid) {
@@ -141,11 +149,13 @@ public class BrewerManager {
 			addDefaultPotionRecipes(CorePotions.resistance, redstone, CorePotions.resistanceLong);
 			addDefaultPotionRecipes(CorePotions.levitation, redstone, CorePotions.levitationLong);
 			addDefaultPotionRecipes(CorePotions.absorption, redstone, CorePotions.absorptionLong);
+			addDefaultPotionRecipes(CorePotions.luck, redstone, CorePotions.luckLong);
 			addDefaultPotionRecipes(CorePotions.wither, redstone, CorePotions.witherLong);
 
 			addDefaultPotionRecipes(CorePotions.haste, glowstone, CorePotions.hasteStrong);
 			addDefaultPotionRecipes(CorePotions.resistance, glowstone, CorePotions.resistanceStrong);
 			addDefaultPotionRecipes(CorePotions.absorption, glowstone, CorePotions.absorptionStrong);
+			addDefaultPotionRecipes(CorePotions.luck, glowstone, CorePotions.luckStrong);
 			addDefaultPotionRecipes(CorePotions.wither, glowstone, CorePotions.witherStrong);
 		}
 
@@ -165,12 +175,12 @@ public class BrewerManager {
 	public static void refresh() {
 
 		Map<List<Integer>, BrewerRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackBrewer> tempSet = new THashSet<>();
+		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
 		BrewerRecipe tempRecipe;
 
 		for (Entry<List<Integer>, BrewerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackBrewer input = new ComparableItemStackBrewer(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = convertInput(tempRecipe.input);
 			tempMap.put(asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.inputFluid)), tempRecipe);
 			tempSet.add(input);
 		}
@@ -188,8 +198,8 @@ public class BrewerManager {
 			return null;
 		}
 		BrewerRecipe recipe = new BrewerRecipe(input, inputFluid, outputFluid, energy);
-		recipeMap.put(asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(inputFluid)), recipe);
-		validationSet.add(new ComparableItemStackBrewer(input));
+		recipeMap.put(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(inputFluid)), recipe);
+		validationSet.add(convertInput(input));
 		validationFluids.add(inputFluid.getFluid().getName());
 		return recipe;
 	}
@@ -197,10 +207,15 @@ public class BrewerManager {
 	/* REMOVE RECIPES */
 	public static BrewerRecipe removeRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMap.remove(asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return recipeMap.remove(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
+	}
+
 	public static void addDefaultPotionRecipes(PotionType input, ItemStack reagent, PotionType output) {
 
 		addRecipe(DEFAULT_ENERGY, reagent, TFFluids.getPotion(DEFAULT_AMOUNT, input), TFFluids.getPotion(DEFAULT_AMOUNT, output));
@@ -248,21 +263,6 @@ public class BrewerManager {
 		public int getEnergy() {
 
 			return energy;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackBrewer extends ComparableItemStackSafeNBT {
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(DUST) || oreName.startsWith(NUGGET);
-		}
-
-		public ComparableItemStackBrewer(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

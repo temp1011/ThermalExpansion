@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.item;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.fluid.IFluidContainerItem;
 import cofh.api.item.IMultiModeItem;
@@ -24,6 +26,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -45,6 +48,7 @@ import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -58,7 +62,8 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemReservoir extends ItemMulti implements IInitializer, IMultiModeItem, IFluidContainerItem, IEnchantableItem, INBTCopyIngredient {
+@Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
+public class ItemReservoir extends ItemMulti implements IInitializer, IMultiModeItem, IFluidContainerItem, IEnchantableItem, INBTCopyIngredient, IBauble {
 
 	public ItemReservoir() {
 
@@ -443,6 +448,42 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return enchantment == CoreEnchantments.holding;
 	}
 
+	/* IBauble */
+	@Override
+	public BaubleType getBaubleType(ItemStack stack) {
+
+		return BaubleType.TRINKET;
+	}
+
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase player) {
+
+		World world = player.world;
+
+		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
+			return;
+		}
+		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+
+		for (ItemStack equipmentStack : equipment) {
+			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
+				continue;
+			}
+			if (FluidHelper.isFluidHandler(equipmentStack)) {
+				IFluidHandlerItem handler = FluidUtil.getFluidHandler(equipmentStack);
+				if (handler != null && getFluid(stack) != null) {
+					drain(stack, handler.fill(new FluidStack(getFluid(stack), Math.min(getFluidAmount(stack), Fluid.BUCKET_VOLUME)), true), true);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
+
+		return true;
+	}
+
 	/* CAPABILITIES */
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -493,7 +534,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			return false;
 		}
 		// @formatter:off
-
 		addShapedRecipe(reservoirBasic,
 				" R ",
 				"IXI",
@@ -503,9 +543,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 				'X', Items.BUCKET,
 				'Y', ItemMaterial.redstoneServo
 		);
-
 		// @formatter:on
-
 		return true;
 	}
 

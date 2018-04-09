@@ -332,6 +332,14 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		return true;
 	}
 
+	protected void clearRecipe() {
+
+	}
+
+	protected void getRecipe() {
+
+	}
+
 	protected void processStart() {
 
 	}
@@ -345,6 +353,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		processRem = 0;
 		isActive = false;
 		wasActive = true;
+		clearRecipe();
 
 		if (world != null) {
 			tracker.markTime(world);
@@ -378,7 +387,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 				updateLighting();
 			}
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.TILE_UPDATE_DELAY)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.tileUpdateDelay)) {
 			wasActive = false;
 			if (LIGHT_VALUES[getType()] != 0) {
 				updateLighting();
